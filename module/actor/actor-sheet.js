@@ -22,14 +22,19 @@ export class MausritterActorSheet extends foundry.appv1.sheets.ActorSheet {
         const data = super.getData();
         data.dtypes = ["String", "Number", "Boolean"];
 
-        const superData = data.system;
-
         // Prepare items.
         if (this.actor.type == 'character') {
             this._prepareCharacterItems(data);
         }
 
-        if (data.system.settings == null) {
+        // V14: getData() returns { data: actorData, ... } wrapper.
+        // Templates expect system at top level, so merge actor data into wrapper.
+        const actorData = data.data;
+        if (actorData && actorData.system) {
+            data.system = actorData.system;
+        }
+
+        if (data.system && data.system.settings == null) {
             data.system.settings = {};
         }
 

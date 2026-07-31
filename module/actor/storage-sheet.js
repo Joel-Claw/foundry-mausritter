@@ -29,7 +29,14 @@ export class MausritterStorageSheet extends foundry.appv1.sheets.ActorSheet {
             this._prepareCharacterItems(data);
         }
 
-        if (data.system.settings == null) {
+        // V14: getData() returns { data: actorData, ... } wrapper.
+        // Templates expect system at top level, so merge actor data into wrapper.
+        const actorData = data.data;
+        if (actorData && actorData.system) {
+            data.system = actorData.system;
+        }
+
+        if (data.system && data.system.settings == null) {
             data.system.settings = {};
         }
 
