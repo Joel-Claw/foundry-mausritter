@@ -1,10 +1,16 @@
 # Mausritter RPG for Foundry VTT
+
 #### This is an unofficial version of the Mausritter RPG system, which is the property of Isaac Williams & Losing Games.
 Mausritter can be purchased here: https://mausritter.com/
 ```
 - The official game Weapon, Item, and Spell Icons by Isaac Williams are licensed under CC-BY.
 - The sample Rat portrait from the official book was allowed to be used with permission from Isaac Williams
 ```
+
+## About This Fork
+
+This is a community fork of [Futil/foundry-mausritter](https://github.com/Futil/foundry-mausritter), maintained to bring the system up to date with current Foundry VTT versions. The original repository has not been updated in over two years. This fork aims to keep Mausritter playable on modern Foundry VTT without changing the system's functionality.
+
 # Features:
 ## Styled character sheets
 Character, Creature, and NPC sheets were built to resemble the standard print sheets.
