@@ -178,7 +178,7 @@ export class MausritterStorageSheet extends foundry.appv1.sheets.ActorSheet {
             creatableItems.forEach(type => selectList += "<option value='" + type + "'>" + type + "</option>")
 
             //Select the stat of the roll.
-            let t = new Dialog({
+            let t = new foundry.applications.api.Dialog({
                 title: "Select Stat",
                 content: "<h2> Item Type </h2> <select style='margin-bottom:10px;'name='type' id='type'> " + selectList + "</select> <br/>",
                 buttons: {
@@ -257,11 +257,11 @@ export class MausritterStorageSheet extends foundry.appv1.sheets.ActorSheet {
 
             let amount = item.system.pips.value;
 
-            if (event.button == 0) {
+            if (ev.button == 0) {
                 if (amount < item.system.pips.max) {
                     item.system.pips.value = Number(amount) + 1;
                 }
-            } else if (event.button == 2) {
+            } else if (ev.button == 2) {
                 if (amount > 0) {
                     item.system.pips.value = Number(amount) - 1;
                 }
@@ -409,10 +409,10 @@ export class MausritterStorageSheet extends foundry.appv1.sheets.ActorSheet {
         const dataset = element.dataset;
 
         if (dataset.roll) {
-            let roll = new Roll(dataset.roll, this.actor.system);
+            let roll = new foundry.dice.Roll(dataset.roll, this.actor.system);
             let label = dataset.label ? `Rolling ${dataset.label} to score under ${dataset.target}` : '';
-            roll.roll().toMessage({
-                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            roll.toMessage({
+                speaker: foundry.documents.ChatMessage.getSpeaker({ actor: this.actor }),
                 flavor: label
             });
         }
@@ -508,7 +508,7 @@ export class MausritterStorageSheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _onDropItem(event, data) {
         if (!this.actor.isOwner) return false;
-        const item = await Item.fromDropData(data);
+        const item = await foundry.documents.Item.fromDropData(data);
         const itemData = foundry.utils.duplicate(item);
 
         // Handle item sorting within the same Actor

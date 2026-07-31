@@ -1,7 +1,7 @@
 export async function showAdditionalItemsChoiceDialog(items, callback) {
     const template = 'systems/mausritter/templates/dialogs/additional-item-choice.html';
-    const html = await renderTemplate(template, {items: items})
-    const d = new Dialog({
+    const html = await foundry.applications.handlebars.renderTemplate(template, {items: items})
+    const d = new foundry.applications.api.Dialog({
         title: "Additional starting items",
         content: html,
         buttons: {

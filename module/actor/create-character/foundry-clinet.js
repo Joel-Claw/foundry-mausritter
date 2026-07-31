@@ -1,5 +1,5 @@
 export async function getItemFromFoundry(item_id) {
-    return await Item.fromDropData({
+    return await foundry.documents.Item.fromDropData({
         type: "Item",
         uuid: item_id
     });
@@ -15,7 +15,7 @@ export async function addItem(itemId, instant, slot) {
 }
 
 export async function attrRoll() {
-    var roll = await new Roll('3d6kh2').roll();
+    var roll = await new foundry.dice.Roll('3d6kh2').roll();
     return await roll.total;
 }
 

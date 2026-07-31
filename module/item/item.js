@@ -1,6 +1,6 @@
 /**
  * Extend the basic Item with some very simple modifications.
- * @extends {Item}
+ * @extends {foundry.documents.Item}
  */
 export class MausritterItem extends foundry.documents.Item {
   /**
@@ -14,19 +14,4 @@ export class MausritterItem extends foundry.documents.Item {
     const actorData = this.actor ? this.actor.system : {};
     const data = itemData.system;
   }
-
-  static chatListeners(html) {
-    html.on('click', '.use-skill', this._onChatUseSkill.bind(this));
-  }
-
-  static async _onChatUseSkill(event) {
-    const token = event.currentTarget.closest(".mausritter");
-    const actor = this._getChatCardActor(token);
-    if (!actor) return;
-
-    const div = event.currentTarget.children[0];
-    const skillId = div.dataset.itemId;
-    actor.rollSkill(skillId);
-  }
-
 }

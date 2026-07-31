@@ -45,7 +45,7 @@ export class MausritterActor extends foundry.documents.Actor {
 
     statList.forEach(stat => selectList += "<option value='" + stat[0] + "'>" + game.i18n.localize('Maus.'+stat[1].label) + "</option>")
 
-    let d = new Dialog({
+    let d = new foundry.applications.api.Dialog({
       title: game.i18n.localize('Maus.RollSelectType'),
       content: "<h2>" + game.i18n.localize('Maus.RollSelectStat') + "</h2> <select style='margin-bottom:10px;'name='stat' id='stat'> " + selectList + "</select> <br/>",
       buttons: {
@@ -74,7 +74,7 @@ export class MausritterActor extends foundry.documents.Actor {
 
     //this.rollAttribute(attribute, "none");
 
-    let d = new Dialog({
+    let d = new foundry.applications.api.Dialog({
       title: game.i18n.localize('Maus.RollSelectType'),
       content: "<h2> "+game.i18n.localize('Maus.RollAdvantageDisadvantage')+ "</h2> <select style='margin-bottom:10px;'name='advantage' id='advantage'> <option value='none'>"+game.i18n.localize('Maus.RollNone')+"</option> <option value='advantage'>"+game.i18n.localize('Maus.RollAdvantageDisadvantage')+"</option></select> <br/>",
       buttons: {
@@ -100,7 +100,7 @@ export class MausritterActor extends foundry.documents.Actor {
 
     if(item.type == "weapon"){
             //Select the stat of the roll.
-      let t = new Dialog({
+      let t = new foundry.applications.api.Dialog({
         title: game.i18n.localize('Maus.RollSelectStat'),
         content: "<h2> "+game.i18n.localize('Maus.RollEnhanced')+"/"+game.i18n.localize('Maus.RollImpaired')+" </h2> <select style='margin-bottom:10px;'name='enhanced' id='enhanced'>\
         <option value='normal'>"+game.i18n.localize('Maus.RollNormal')+"</option>\
@@ -129,7 +129,7 @@ export class MausritterActor extends foundry.documents.Actor {
       // this.rollWeapon(item, item.system.weapon.dmg2);
     } else if(item.type=="spell"){
       //Select the stat of the roll.
-      let t = new Dialog({
+      let t = new foundry.applications.api.Dialog({
         title: "Select Stat",
         content: "<h2> "+game.i18n.localize('Maus.RollPowerDesc')+" </h2> <input style='margin-bottom:10px;' name='power' id='power' value='1'></input><br/>",
         buttons: {
@@ -166,7 +166,7 @@ export class MausritterActor extends foundry.documents.Actor {
   // else
   // this.rollWeapon(item, item.system.weapon.dmg2);
 
-    let damageRoll = new Roll(die);
+    let damageRoll = new foundry.dice.Roll(die);
     await damageRoll.evaluate();
     //damageRoll.roll();
 
@@ -210,17 +210,17 @@ export class MausritterActor extends foundry.documents.Actor {
     };
 
     let rollMode = game.settings.get("core", "rollMode");
-    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
+    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = foundry.documents.ChatMessage.getWhisperRecipients("GM");
 
     let template = 'systems/mausritter/templates/chat/statroll.html';
-    renderTemplate(template, templateData).then(content => {
+    foundry.applications.handlebars.renderTemplate(template, templateData).then(content => {
       chatData.content = content;
       if (game.dice3d) {
-        game.dice3d.showForRoll(damageRoll, game.user, true, chatData.whisper, chatData.blind).then(displayed => ChatMessage.create(chatData));
+        game.dice3d.showForRoll(damageRoll, game.user, true, chatData.whisper, chatData.blind).then(displayed => foundry.documents.ChatMessage.create(chatData));
 
       } else {
         chatData.sound = CONFIG.sounds?.dice || null;
-        ChatMessage.create(chatData);
+        foundry.documents.ChatMessage.create(chatData);
       }
     });
 
@@ -229,7 +229,7 @@ export class MausritterActor extends foundry.documents.Actor {
   async rollSpell(item = "", power = ""){
     let die = power+"d6";
 
-    let damageRoll = new Roll(die);
+    let damageRoll = new foundry.dice.Roll(die);
     await damageRoll.evaluate();
 
     const diceData = this.formatDice(damageRoll);
@@ -306,17 +306,17 @@ export class MausritterActor extends foundry.documents.Actor {
     };
 
     let rollMode = game.settings.get("core", "rollMode");
-    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
+    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = foundry.documents.ChatMessage.getWhisperRecipients("GM");
 
     let template = 'systems/mausritter/templates/chat/statroll.html';
-    renderTemplate(template, templateData).then(content => {
+    foundry.applications.handlebars.renderTemplate(template, templateData).then(content => {
       chatData.content = content;
       if (game.dice3d) {
-        game.dice3d.showForRoll(damageRoll, game.user, true, chatData.whisper, chatData.blind).then(displayed => ChatMessage.create(chatData));
+        game.dice3d.showForRoll(damageRoll, game.user, true, chatData.whisper, chatData.blind).then(displayed => foundry.documents.ChatMessage.create(chatData));
 
       } else {
         chatData.sound = CONFIG.sounds?.dice || null;
-        ChatMessage.create(chatData);
+        foundry.documents.ChatMessage.create(chatData);
       }
     });
 
@@ -331,18 +331,18 @@ export class MausritterActor extends foundry.documents.Actor {
     let diceformular = "1d20";
 
 
-    let r = new Roll(diceformular, {});
+    let r = new foundry.dice.Roll(diceformular, {});
     await r.evaluate();
 
     let rSplit = ("" + r.total).split("");
 
     //Advantage roll
-    let a = new Roll(diceformular, {});
+    let a = new foundry.dice.Roll(diceformular, {});
     await a.evaluate();
 
     let damageRoll = 0;
     if (item.type == "weapon") {
-      damageRoll = new Roll(item.system.damage);
+      damageRoll = new foundry.dice.Roll(item.system.damage);
       await damageRoll.evaluate();
 
     }
@@ -406,22 +406,22 @@ export class MausritterActor extends foundry.documents.Actor {
     };
 
     let rollMode = game.settings.get("core", "rollMode");
-    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
+    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = foundry.documents.ChatMessage.getWhisperRecipients("GM");
 
     /*
             if (this.data.type == "hireling") {
-                chatData.whisper = game.user._id;
+                chatData.whisper = game.user.id;
             }
     */
     let template = 'systems/mausritter/templates/chat/statroll.html';
-    renderTemplate(template, templateData).then(content => {
+    foundry.applications.handlebars.renderTemplate(template, templateData).then(content => {
       chatData.content = content;
       if (game.dice3d) {
-        game.dice3d.showForRoll(r, game.user, true, chatData.whisper, chatData.blind).then(displayed => ChatMessage.create(chatData));
+        game.dice3d.showForRoll(r, game.user, true, chatData.whisper, chatData.blind).then(displayed => foundry.documents.ChatMessage.create(chatData));
 
       } else {
         chatData.sound = CONFIG.sounds?.dice || null;
-        ChatMessage.create(chatData);
+        foundry.documents.ChatMessage.create(chatData);
       }
     });
   }
@@ -444,7 +444,7 @@ export class MausritterActor extends foundry.documents.Actor {
       };
 
       for (let i = 0; i < diceRoll.terms.length; i++) {
-        if (diceRoll.terms[i] instanceof Die) {
+        if (diceRoll.terms[i] instanceof foundry.dice.terms.Die) {
           let pool = diceRoll.terms[i].results;
           let faces = diceRoll.terms[i].faces;
 
@@ -541,18 +541,18 @@ export class MausritterActor extends foundry.documents.Actor {
     };
 
     let rollMode = game.settings.get("core", "rollMode");
-    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
+    if (["gmroll", "blindroll"].includes(rollMode)) chatData["whisper"] = foundry.documents.ChatMessage.getWhisperRecipients("GM");
 
     /*
             if (this.data.type == "hireling") {
-                chatData.whisper = game.user._id;
+                chatData.whisper = game.user.id;
             }
     */
     let template = 'systems/mausritter/templates/chat/statroll.html';
-    renderTemplate(template, templateData).then(content => {
+    foundry.applications.handlebars.renderTemplate(template, templateData).then(content => {
       chatData.content = content;
 
-      ChatMessage.create(chatData);
+      foundry.documents.ChatMessage.create(chatData);
     });
   }
 

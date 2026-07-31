@@ -1,7 +1,7 @@
 export async function showCreateCharacterDialog(callback) {
     const template = 'systems/mausritter/templates/dialogs/create-character.html';
-    const html = await renderTemplate(template)
-    const d = new Dialog({
+    const html = await foundry.applications.handlebars.renderTemplate(template)
+    const d = new foundry.applications.api.Dialog({
         title: "What do you want to create?",
         content: html,
         buttons: {
@@ -10,7 +10,7 @@ export async function showCreateCharacterDialog(callback) {
                 label: 'ok',
                 callback: (html) => {
                     const formElement = html[0].querySelector('fieldset');
-                    const formData = new FormDataExtended(formElement);
+                    const formData = new foundry.applications.forms.FormDataExtended(formElement);
                     const options = formData.object;
                     callback(options)
                 }

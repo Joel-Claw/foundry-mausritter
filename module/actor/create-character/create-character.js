@@ -30,7 +30,7 @@ export async function autoCreateCharacter() {
 export async function createCharacter(options, additionalWeaponsItems) {
     const background = options.background ? getRandomBackground() : undefined
     const characterStats = await createStats(background, options.stats, options.details);
-    const characterActor = await Actor.create(characterStats);
+    const characterActor = await foundry.documents.Actor.create(characterStats);
 
     if (options.background && options.items) {
         await addItemsFromBackground(characterActor, background);

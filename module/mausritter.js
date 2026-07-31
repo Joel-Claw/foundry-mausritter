@@ -162,7 +162,7 @@ Hooks.once("ready", async function () {
  */
 async function createMausritterMacro(dropData, slot) {
   const macroData = { type: "script", scope: "actor" };
-  const itemData = await Item.implementation.fromDropData(dropData);
+  const itemData = await foundry.documents.Item.implementation.fromDropData(dropData);
 
   if (!itemData) {
     ui.notifications.warn("You can only create macro buttons for owned Items");
@@ -186,7 +186,7 @@ async function createMausritterMacro(dropData, slot) {
         m.command === macroData.command &&
         m.isAuthor
       );
-    }) || (await Macro.create(macroData));
+    }) || (await foundry.documents.Macro.create(macroData));
   game.user.assignHotbarMacro(macro, slot);
 }
 
@@ -197,7 +197,7 @@ async function createMausritterMacro(dropData, slot) {
  * @return {Promise}
  */
 function rollItemMacro(itemName) {
-  const speaker = ChatMessage.getSpeaker();
+  const speaker = foundry.documents.ChatMessage.getSpeaker();
   let actor;
   if (speaker.token) actor = game.actors.get(speaker.token);
   if (!actor) actor = game.actors.get(speaker.actor);
@@ -214,8 +214,8 @@ function rollItemMacro(itemName) {
  * @return {Promise}
  */
 function rollStatMacro() {
-  var selected = canvas.tokens.controlled;
-  const speaker = ChatMessage.getSpeaker();
+  var selected = canvas.tokens.controlledTokens;
+  const speaker = foundry.documents.ChatMessage.getSpeaker();
 
   if (selected.length == 0) {
     selected = game.actors.get(speaker.token);
