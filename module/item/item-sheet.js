@@ -31,6 +31,9 @@ export class MausritterItemSheet extends foundry.appv1.sheets.ItemSheet {
   /** @override */
   getData() {
     const data = super.getData();
+    // V14: Use this.item.system directly for template access.
+    data.system = this.item.system;
+    data.item = this.item;
     return data;
   }
 
