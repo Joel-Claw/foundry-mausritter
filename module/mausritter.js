@@ -52,37 +52,44 @@ Hooks.once('init', async function () {
     lastName: "Mousy Names - Matriname"
   }
   
-  // Register sheet application classes (V14 API)
-  // V14 DocumentSheetConfig requires documentClass as first param
-  const sheetConfig = foundry.applications.api.DocumentSheetConfig;
+  // Register sheet application classes
+  // Our sheets extend foundry.appv1.sheets.ActorSheet (V1 compat layer),
+  // so we use the deprecated but functional Actors/Items.registerSheet API.
+  // This is exactly what dnd5e does for its V1 legacy sheets in V14.
+  // DocumentSheetConfig is only for V2 sheets (extending ApplicationV2).
   const ActorSheetV1 = foundry.appv1.sheets.ActorSheet;
   const ItemSheetV1 = foundry.appv1.sheets.ItemSheet;
-  const ActorDoc = foundry.documents.Actor;
-  const ItemDoc = foundry.documents.Item;
 
-  sheetConfig.unregisterSheet(ActorDoc, "core", ActorSheetV1, {
+  Actors.unregisterSheet("core", ActorSheetV1, {
     types: ['character', 'hireling', 'creature', 'storage']
   });
 
-  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterActorSheet, {
+  Actors.registerSheet("mausritter", MausritterActorSheet, {
     types: ['character'],
-    makeDefault: true
+    makeDefault: true,
+    label: "Mausritter Character Sheet"
   });
-  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterHirelingSheet, {
+  Actors.registerSheet("mausritter", MausritterHirelingSheet, {
     types: ['hireling'],
-    makeDefault: false
+    makeDefault: true,
+    label: "Mausritter Hireling Sheet"
   });
-  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterCreatureSheet, {
+  Actors.registerSheet("mausritter", MausritterCreatureSheet, {
     types: ['creature'],
-    makeDefault: false
+    makeDefault: true,
+    label: "Mausritter Creature Sheet"
   });
-  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterStorageSheet, {
+  Actors.registerSheet("mausritter", MausritterStorageSheet, {
     types: ['storage'],
-    makeDefault: false
+    makeDefault: true,
+    label: "Mausritter Storage Sheet"
   });
 
-  sheetConfig.unregisterSheet(ItemDoc, "core", ItemSheetV1);
-  sheetConfig.registerSheet(ItemDoc, "mausritter", MausritterItemSheet, { makeDefault: true });
+  Items.unregisterSheet("core", ItemSheetV1);
+  Items.registerSheet("mausritter", MausritterItemSheet, {
+    makeDefault: true,
+    label: "Mausritter Item Sheet"
+  });
 
   // If you need to add Handlebars helpers, here are a few useful examples:
   Handlebars.registerHelper('concat', function () {
