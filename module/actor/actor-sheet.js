@@ -162,8 +162,8 @@ export class MausritterActorSheet extends foundry.appv1.sheets.ActorSheet {
                         action: "roll",
                         icon: '<i class="fas fa-check"></i>',
                         label: "Create",
-                        callback: async (html) => {
-                            this._onItemCreate(ev, $(html).find('[id=\"type\"]')[0].value)
+                        callback: async (event, button, dialog) => {
+                            this._onItemCreate(ev, dialog.element.querySelector('[id="type"]').value)
                         },
                         default: true
                     },

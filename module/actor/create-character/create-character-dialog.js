@@ -9,8 +9,8 @@ export async function showCreateCharacterDialog(callback) {
                 action: "roll",
                 icon: '<i class="fas fa-check"></i>',
                 label: 'ok',
-                callback: (html) => {
-                    const formElement = html[0].querySelector('fieldset');
+                callback: (event, button, dialog) => {
+                    const formElement = dialog.element.querySelector('fieldset');
                     const formData = new foundry.applications.forms.FormDataExtended(formElement);
                     const options = formData.object;
                     callback(options)

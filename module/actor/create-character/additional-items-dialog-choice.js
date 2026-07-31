@@ -9,8 +9,8 @@ export async function showAdditionalItemsChoiceDialog(items, callback) {
                 action: "ok",
                 icon: '<i class="fas fa-check"></i>',
                 label: 'ok',
-                callback: (html) => {
-                    const selector = html[0].querySelector('select');
+                callback: (event, button, dialog) => {
+                    const selector = dialog.element.querySelector('select');
                     callback(selector.selectedIndex)
                 },
                 default: true

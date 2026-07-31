@@ -9,7 +9,7 @@ export async function showAdditionalItemsInfoDialog(items) {
                 action: "ok",
                 icon: '<i class="fas fa-check"></i>',
                 label: 'ok',
-                callback: (html) => {
+                callback: (event, button, dialog) => {
                 },
                 default: true
             }
