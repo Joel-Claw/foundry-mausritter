@@ -183,19 +183,21 @@ export class MausritterCreatureSheet extends foundry.appv1.sheets.ActorSheet {
             let t = new foundry.applications.api.Dialog({
                 title: "Select Stat",
                 content: "<h2> Item Type </h2> <select style='margin-bottom:10px;'name='type' id='type'> " + selectList + "</select> <br/>",
-                buttons: {
-                    roll: {
+                buttons: [
+                    {
+                        action: "roll",
                         icon: '<i class="fas fa-check"></i>',
                         label: "Create",
-                        callback: (html) => this._onItemCreate(ev, html.find('[id=\"type\"]')[0].value)
+                        callback: (html) => this._onItemCreate(ev, html.find('[id=\"type\"]')[0].value),
+                        default: true
                     },
-                    cancel: {
+                    {
+                        action: "cancel",
                         icon: '<i class="fas fa-times"></i>',
                         label: "Cancel",
                         callback: () => { }
                     }
-                },
-                default: "roll",
+                ],
                 close: () => { }
             });
             t.render(true);

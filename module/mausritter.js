@@ -60,33 +60,36 @@ Hooks.once('init', async function () {
   const ActorSheetV1 = foundry.appv1.sheets.ActorSheet;
   const ItemSheetV1 = foundry.appv1.sheets.ItemSheet;
 
-  Actors.unregisterSheet("core", ActorSheetV1, {
+  const ActorsCollection = foundry.documents.collections.Actors;
+  const ItemsCollection = foundry.documents.collections.Items;
+
+  ActorsCollection.unregisterSheet("core", ActorSheetV1, {
     types: ['character', 'hireling', 'creature', 'storage']
   });
 
-  Actors.registerSheet("mausritter", MausritterActorSheet, {
+  ActorsCollection.registerSheet("mausritter", MausritterActorSheet, {
     types: ['character'],
     makeDefault: true,
     label: "Mausritter Character Sheet"
   });
-  Actors.registerSheet("mausritter", MausritterHirelingSheet, {
+  ActorsCollection.registerSheet("mausritter", MausritterHirelingSheet, {
     types: ['hireling'],
     makeDefault: true,
     label: "Mausritter Hireling Sheet"
   });
-  Actors.registerSheet("mausritter", MausritterCreatureSheet, {
+  ActorsCollection.registerSheet("mausritter", MausritterCreatureSheet, {
     types: ['creature'],
     makeDefault: true,
     label: "Mausritter Creature Sheet"
   });
-  Actors.registerSheet("mausritter", MausritterStorageSheet, {
+  ActorsCollection.registerSheet("mausritter", MausritterStorageSheet, {
     types: ['storage'],
     makeDefault: true,
     label: "Mausritter Storage Sheet"
   });
 
-  Items.unregisterSheet("core", ItemSheetV1);
-  Items.registerSheet("mausritter", MausritterItemSheet, {
+  ItemsCollection.unregisterSheet("core", ItemSheetV1);
+  ItemsCollection.registerSheet("mausritter", MausritterItemSheet, {
     makeDefault: true,
     label: "Mausritter Item Sheet"
   });

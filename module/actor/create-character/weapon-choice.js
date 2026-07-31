@@ -4,23 +4,25 @@ export async function showWeaponChoiceDialog(callback) {
     const d = new foundry.applications.api.Dialog({
         title: "What weapon do you want?",
         content: html,
-        buttons: {
-            ok: {
+        buttons: [
+            {
+                action: "ok",
                 icon: '<i class="fas fa-check"></i>',
                 label: 'ok',
                 callback: (html) => {
                     const selector = html[0].querySelector('select');
                     callback(selector.value)
-                }
+                },
+                default: true
             },
-            cancel: {
+            {
+                action: "cancel",
                 icon: '<i class="fas fa-times"></i>',
                 label: game.i18n.localize('Maus.Cancel'),
                 callback: () => {
                 }
             }
-        },
-        default: "ok",
+        ],
         close: () => {
         }
     });

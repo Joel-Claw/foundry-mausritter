@@ -4,8 +4,9 @@ export async function showCreateCharacterDialog(callback) {
     const d = new foundry.applications.api.Dialog({
         title: "What do you want to create?",
         content: html,
-        buttons: {
-            roll: {
+        buttons: [
+            {
+                action: "roll",
                 icon: '<i class="fas fa-check"></i>',
                 label: 'ok',
                 callback: (html) => {
@@ -13,16 +14,17 @@ export async function showCreateCharacterDialog(callback) {
                     const formData = new foundry.applications.forms.FormDataExtended(formElement);
                     const options = formData.object;
                     callback(options)
-                }
+                },
+                default: true
             },
-            cancel: {
+            {
+                action: "cancel",
                 icon: '<i class="fas fa-times"></i>',
                 label: game.i18n.localize('Maus.Cancel'),
                 callback: () => {
                 }
             }
-        },
-        default: "roll",
+        ],
         close: () => {
         }
     });

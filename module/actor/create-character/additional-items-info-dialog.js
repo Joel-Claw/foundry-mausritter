@@ -4,15 +4,16 @@ export async function showAdditionalItemsInfoDialog(items) {
     const d = new foundry.applications.api.Dialog({
         title: "Additional starting items",
         content: html,
-        buttons: {
-            ok: {
+        buttons: [
+            {
+                action: "ok",
                 icon: '<i class="fas fa-check"></i>',
                 label: 'ok',
                 callback: (html) => {
-                }
-            },
-        },
-        default: "ok",
+                },
+                default: true
+            }
+        ],
         close: () => {
         }
     });

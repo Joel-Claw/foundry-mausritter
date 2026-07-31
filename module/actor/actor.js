@@ -48,19 +48,21 @@ export class MausritterActor extends foundry.documents.Actor {
     let d = new foundry.applications.api.Dialog({
       title: game.i18n.localize('Maus.RollSelectType'),
       content: "<h2>" + game.i18n.localize('Maus.RollSelectStat') + "</h2> <select style='margin-bottom:10px;'name='stat' id='stat'> " + selectList + "</select> <br/>",
-      buttons: {
-        roll: {
+      buttons: [
+        {
+          action: "roll",
           icon: '<i class="fas fa-check"></i>',
           label: game.i18n.localize('Maus.Roll'),
-          callback: (html) => this.rollStat(this.system.stats[html.find('[id=\"stat\"]')[0].value])
+          callback: (html) => this.rollStat(this.system.stats[html.find('[id=\"stat\"]')[0].value]),
+          default: true
         },
-        cancel: {
+        {
+          action: "cancel",
           icon: '<i class="fas fa-times"></i>',
           label: game.i18n.localize('Maus.Cancel'),
           callback: () => { }
         }
-      },
-      default: "roll",
+      ],
       close: () => { }
     });
     d.render(true);
@@ -77,19 +79,21 @@ export class MausritterActor extends foundry.documents.Actor {
     let d = new foundry.applications.api.Dialog({
       title: game.i18n.localize('Maus.RollSelectType'),
       content: "<h2> "+game.i18n.localize('Maus.RollAdvantageDisadvantage')+ "</h2> <select style='margin-bottom:10px;'name='advantage' id='advantage'> <option value='none'>"+game.i18n.localize('Maus.RollNone')+"</option> <option value='advantage'>"+game.i18n.localize('Maus.RollAdvantageDisadvantage')+"</option></select> <br/>",
-      buttons: {
-        roll: {
+      buttons: [
+        {
+          action: "roll",
           icon: '<i class="fas fa-check"></i>',
           label: game.i18n.localize('Maus.Roll'),
-          callback: (html) => this.rollAttribute(attribute, html.find('[id=\"advantage\"]')[0].value)
+          callback: (html) => this.rollAttribute(attribute, html.find('[id=\"advantage\"]')[0].value),
+          default: true
         },
-        cancel: {
+        {
+          action: "cancel",
           icon: '<i class="fas fa-times"></i>',
           label: game.i18n.localize('Maus.Cancel'),
           callback: () => { }
         }
-      },
-      default: "roll",
+      ],
       close: () => { }
     });
     d.render(true);
@@ -106,19 +110,21 @@ export class MausritterActor extends foundry.documents.Actor {
         <option value='normal'>"+game.i18n.localize('Maus.RollNormal')+"</option>\
         <option value='enhanced'>"+game.i18n.localize('Maus.RollEnhanced')+"</option>\
         <option value='impaired'>"+game.i18n.localize('Maus.RollImpaired')+"</option></select> <br/>",
-        buttons: {
-          roll: {
+        buttons: [
+          {
+            action: "roll",
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize('Maus.Roll'),
-            callback: (html) => this.rollWeapon(item, html.find('[id=\"enhanced\"]')[0].value)
+            callback: (html) => this.rollWeapon(item, html.find('[id=\"enhanced\"]')[0].value),
+            default: true
           },
-          cancel: {
+          {
+            action: "cancel",
             icon: '<i class="fas fa-times"></i>',
             label: game.i18n.localize('Maus.Cancel'),
             callback: () => { }
           }
-        },
-        default: "roll",
+        ],
         close: () => { }
       });
       t.render(true);
@@ -132,19 +138,21 @@ export class MausritterActor extends foundry.documents.Actor {
       let t = new foundry.applications.api.Dialog({
         title: "Select Stat",
         content: "<h2> "+game.i18n.localize('Maus.RollPowerDesc')+" </h2> <input style='margin-bottom:10px;' name='power' id='power' value='1'></input><br/>",
-        buttons: {
-          roll: {
+        buttons: [
+          {
+            action: "roll",
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize('Maus.Roll'),
-            callback: (html) => this.rollSpell(item, html.find('[id=\"power\"]')[0].value)
+            callback: (html) => this.rollSpell(item, html.find('[id=\"power\"]')[0].value),
+            default: true
           },
-          cancel: {
+          {
+            action: "cancel",
             icon: '<i class="fas fa-times"></i>',
             label: game.i18n.localize('Maus.Cancel'),
             callback: () => { }
           }
-        },
-        default: "roll",
+        ],
         close: () => { }
       });
       t.render(true);
