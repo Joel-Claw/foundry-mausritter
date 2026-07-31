@@ -27,6 +27,8 @@ export class MausritterHirelingSheet extends foundry.appv1.sheets.ActorSheet {
     data.system = this.actor.system;
     data.actor = this.actor;
     data.items = Array.from(this.actor.items);
+    data.name = this.actor.name;
+    data.img = this.actor.img;
 
     // Prepare items.
     if (this.actor.type == 'hireling') {
