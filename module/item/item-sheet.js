@@ -34,6 +34,8 @@ export class MausritterItemSheet extends foundry.appv1.sheets.ItemSheet {
     // V14: Use this.item.system directly for template access.
     data.system = this.item.system;
     data.item = this.item;
+    data.name = this.item.name;
+    data.img = this.item.img;
     return data;
   }
 
@@ -71,10 +73,11 @@ export class MausritterItemSheet extends foundry.appv1.sheets.ItemSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  _updateObject(event, formData) {
-    // V14: Ensure required 'name' field is present in update diff
-    if (formData.name === undefined) formData.name = this.item.name;
-    return this.item.update(formData);
+  async _updateObject(event, formData) {
+    const updateData = foundry.utils.expandObject(formData);
+    // V14: Ensure required 'name' field is present to pass schema validation.
+    if (updateData.name === undefined) updateData.name = this.item.name;
+    await this.item.update(updateData, { diff: false });
   }
 
   /* -------------------------------------------- */
