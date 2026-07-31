@@ -63,9 +63,11 @@ Hooks.once('init', async function () {
   const ActorsCollection = foundry.documents.collections.Actors;
   const ItemsCollection = foundry.documents.collections.Items;
 
-  ActorsCollection.unregisterSheet("core", ActorSheetV1, {
-    types: ['character', 'hireling', 'creature', 'storage']
-  });
+  // V14: Unregister core sheet per type to avoid registration conflicts
+  ActorsCollection.unregisterSheet("core", ActorSheetV1, { types: ['character'] });
+  ActorsCollection.unregisterSheet("core", ActorSheetV1, { types: ['hireling'] });
+  ActorsCollection.unregisterSheet("core", ActorSheetV1, { types: ['creature'] });
+  ActorsCollection.unregisterSheet("core", ActorSheetV1, { types: ['storage'] });
 
   ActorsCollection.registerSheet("mausritter", MausritterActorSheet, {
     types: ['character'],
