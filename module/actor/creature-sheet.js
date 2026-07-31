@@ -421,7 +421,8 @@ export class MausritterCreatureSheet extends foundry.appv1.sheets.ActorSheet {
     async _updateObject(event, formData) {
         const actor = this.object;
         const updateData = foundry.utils.expandObject(formData);
-
+        // V14: Ensure required fields are present to pass schema validation.
+        if (updateData.name === undefined) updateData.name = actor.name;
         await actor.update(updateData, {
             diff: false
         });
