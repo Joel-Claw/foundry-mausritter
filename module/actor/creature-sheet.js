@@ -3,7 +3,7 @@
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class MausritterCreatureSheet extends ActorSheet {
+export class MausritterCreatureSheet extends foundry.appv1.sheets.ActorSheet {
 
     /** @override */
     static get defaultOptions() {
