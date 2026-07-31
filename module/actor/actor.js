@@ -53,7 +53,7 @@ export class MausritterActor extends foundry.documents.Actor {
           action: "roll",
           icon: '<i class="fas fa-check"></i>',
           label: game.i18n.localize('Maus.Roll'),
-          callback: (html) => this.rollStat(this.system.stats[html.find('[id=\"stat\"]')[0].value]),
+          callback: (html) => this.rollStat(this.system.stats[$(html).find('[id=\"stat\"]')[0].value]),
           default: true
         },
         {
@@ -84,7 +84,7 @@ export class MausritterActor extends foundry.documents.Actor {
           action: "roll",
           icon: '<i class="fas fa-check"></i>',
           label: game.i18n.localize('Maus.Roll'),
-          callback: (html) => this.rollAttribute(attribute, html.find('[id=\"advantage\"]')[0].value),
+          callback: (html) => this.rollAttribute(attribute, $(html).find('[id=\"advantage\"]')[0].value),
           default: true
         },
         {
@@ -115,7 +115,7 @@ export class MausritterActor extends foundry.documents.Actor {
             action: "roll",
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize('Maus.Roll'),
-            callback: (html) => this.rollWeapon(item, html.find('[id=\"enhanced\"]')[0].value),
+            callback: (html) => this.rollWeapon(item, $(html).find('[id=\"enhanced\"]')[0].value),
             default: true
           },
           {
@@ -143,7 +143,7 @@ export class MausritterActor extends foundry.documents.Actor {
             action: "roll",
             icon: '<i class="fas fa-check"></i>',
             label: game.i18n.localize('Maus.Roll'),
-            callback: (html) => this.rollSpell(item, html.find('[id=\"power\"]')[0].value),
+            callback: (html) => this.rollSpell(item, $(html).find('[id=\"power\"]')[0].value),
             default: true
           },
           {

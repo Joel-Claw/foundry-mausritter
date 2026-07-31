@@ -163,7 +163,7 @@ export class MausritterActorSheet extends foundry.appv1.sheets.ActorSheet {
                         icon: '<i class="fas fa-check"></i>',
                         label: "Create",
                         callback: async (html) => {
-                            this._onItemCreate(ev, html.find('[id=\"type\"]')[0].value)
+                            this._onItemCreate(ev, $(html).find('[id=\"type\"]')[0].value)
                         },
                         default: true
                     },
