@@ -101,28 +101,28 @@ Hooks.once('init', async function () {
 /**
  * Set default values for new actors' tokens
  */
- Hooks.on("preCreateActor", (document, createData, options, userId) => {
+ Hooks.on("preCreateActor", (actor, createData, options, userId) => {
   let disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
 
-  if (createData.type == "creature") {
-    disposition = CONST.TOKEN_DISPOSITIONS.HOSTILE
+  if (actor.type == "creature") {
+    disposition = CONST.TOKEN_DISPOSITIONS.HOSTILE;
   }
 
-  // Set wounds, advantage, and display name visibility
-  mergeObject(createData,
-    {
-      "token.bar1": { "attribute": "health" },        // Default Bar 1 to Health 
-      "token.bar2": { "stat": "strength" },      // Default Bar 2 to Insanity
-      "token.displayName": CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,     // Default display name to be on owner hover
-      "token.displayBars": CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,     // Default display bars to be on owner hover
-      "token.disposition": disposition,                               // Default disposition to neutral
-      "token.name": createData.name                                   // Set token name to actor name
-    })
+  // Set default token configuration
+  actor.updateSource({
+    "prototypeToken.bar1": { "attribute": "health" },
+    "prototypeToken.bar2": { "stat": "strength" },
+    "prototypeToken.displayName": CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+    "prototypeToken.displayBars": CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+    "prototypeToken.disposition": disposition,
+    "prototypeToken.name": actor.name
+  });
 
-
-  if (createData.type == "character") {
-    createData.token.vision = true;
-    createData.token.actorLink = true;
+  if (actor.type == "character") {
+    actor.updateSource({
+      "prototypeToken.vision": true,
+      "prototypeToken.actorLink": true
+    });
   }
 })
 
@@ -163,7 +163,7 @@ async function createMausritterMacro(dropData, slot) {
     return null;
   }
   
-  mergeObject(macroData, {
+  foundry.utils.mergeObject(macroData, {
     name: itemData.name,
     img: itemData.img,
     command: `game.mausritter.rollItemMacro("${itemData.name}")`,
@@ -193,7 +193,7 @@ async function createMausritterMacro(dropData, slot) {
 function rollItemMacro(itemName) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
-  if (speaker.token) actor = game.actors.tokens[speaker.token];
+  if (speaker.token) actor = game.actors.get(speaker.token);
   if (!actor) actor = game.actors.get(speaker.actor);
   const item = actor ? actor.items.find(i => i.name === itemName) : null;
   if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
@@ -212,11 +212,11 @@ function rollStatMacro() {
   const speaker = ChatMessage.getSpeaker();
 
   if (selected.length == 0) {
-    selected = game.actors.tokens[speaker.token];
+    selected = game.actors.get(speaker.token);
   }
 
   let actor;
-  if (speaker.token) actor = game.actors.tokens[speaker.token];
+  if (speaker.token) actor = game.actors.get(speaker.token);
   if (!actor) actor = game.actors.get(speaker.actor);
   const stat = actor ? Object.entries(actor.system.stats) : null;
 

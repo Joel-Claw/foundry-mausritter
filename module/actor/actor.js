@@ -96,7 +96,7 @@ export class MausritterActor extends Actor {
   }
 
   rollItem(itemId, options = { event: null }) {
-    let item = duplicate(this.getEmbeddedDocument("Item", itemId));
+    let item = foundry.utils.duplicate(this.getEmbeddedDocument("Item", itemId));
 
     if(item.type == "weapon"){
             //Select the stat of the roll.
@@ -186,14 +186,14 @@ export class MausritterActor extends Actor {
       actor: this,
       data: {
         diceTotal: {
-          damageValue: damageRoll._total,
+          damageValue: damageRoll.total,
           damageRoll: damageRoll
         },
       },
       item: item,
       pip: pipHtml,
       rollTitle: game.i18n.localize('Maus.RollDamage'), //The title of the roll.
-      rollText: damageRoll._total, //What is printed within the roll amount.
+      rollText: damageRoll.total, //What is printed within the roll amount.
       damageDice: die,
       weaponState: game.i18n.localize('Maus.Roll' + state.charAt(0).toUpperCase() + state.slice(1)), 
       isWeapon: true,
@@ -204,7 +204,7 @@ export class MausritterActor extends Actor {
       user: game.user.id,
       speaker: {
         actor: this.id,
-        token: this.token,
+        token: this.prototypeToken,
         alias: this.name
       }
     };
@@ -219,7 +219,7 @@ export class MausritterActor extends Actor {
         game.dice3d.showForRoll(damageRoll, game.user, true, chatData.whisper, chatData.blind).then(displayed => ChatMessage.create(chatData));
 
       } else {
-        chatData.sound = CONFIG.sounds.dice;
+        chatData.sound = CONFIG.sounds?.dice || null;
         ChatMessage.create(chatData);
       }
     });
@@ -258,7 +258,7 @@ export class MausritterActor extends Actor {
     }
   
     item.system.description = item.system.description.split(game.i18n.localize('Maus.RollDiceKeyword')).join("<strong style='text-decoration:underline' class='red'>"+power+"</strong>");
-    item.system.description = item.system.description.split(game.i18n.localize('Maus.RollSumKeyword')).join("<strong style='text-decoration:underline' class='red'>"+damageRoll._total+"</strong>");
+    item.system.description = item.system.description.split(game.i18n.localize('Maus.RollSumKeyword')).join("<strong style='text-decoration:underline' class='red'>"+damageRoll.total+"</strong>");
     item.system.description += "<h2>"+game.i18n.localize('Maus.RollUsage')+": <strong>"+usage+"</strong></h2>";
     if(miscast){
       let miscastDesc = game.i18n.localize('Maus.RollMiscastDesc');
@@ -280,7 +280,7 @@ export class MausritterActor extends Actor {
       actor: this,
       data: {
         diceTotal: {
-          damageValue: damageRoll._total,
+          damageValue: damageRoll.total,
           damageRoll: damageRoll
         },
         rollDiv:rollDiv
@@ -290,8 +290,8 @@ export class MausritterActor extends Actor {
       isSpell: true,
       isWeapon:true,
       rollTitle: game.i18n.localize('Maus.RollSum')+"|"+game.i18n.localize('Maus.RollDice'), //The title of the roll.
-      rollText: damageRoll._total+'|'+power, //What is printed within the roll amount.
-      sum: damageRoll._total,
+      rollText: damageRoll.total+'|'+power, //What is printed within the roll amount.
+      sum: damageRoll.total,
       dice: power,
       diceData
     };
@@ -300,7 +300,7 @@ export class MausritterActor extends Actor {
       user: game.user.id,
       speaker: {
         actor: this.id,
-        token: this.token,
+        token: this.prototypeToken,
         alias: this.name
       }
     };
@@ -315,7 +315,7 @@ export class MausritterActor extends Actor {
         game.dice3d.showForRoll(damageRoll, game.user, true, chatData.whisper, chatData.blind).then(displayed => ChatMessage.create(chatData));
 
       } else {
-        chatData.sound = CONFIG.sounds.dice;
+        chatData.sound = CONFIG.sounds?.dice || null;
         ChatMessage.create(chatData);
       }
     });
@@ -334,7 +334,7 @@ export class MausritterActor extends Actor {
     let r = new Roll(diceformular, {});
     await r.evaluate();
 
-    let rSplit = ("" + r._total).split("");
+    let rSplit = ("" + r.total).split("");
 
     //Advantage roll
     let a = new Roll(diceformular, {});
@@ -359,13 +359,13 @@ export class MausritterActor extends Actor {
     let resultText = "";
 
     if (rollOver == true) {
-        resultText = (r._total >= targetValue ? game.i18n.localize('Maus.RollSuccess') : game.i18n.localize('Maus.RollFailure'));
+        resultText = (r.total >= targetValue ? game.i18n.localize('Maus.RollSuccess') : game.i18n.localize('Maus.RollFailure'));
     } else {
-        resultText = (r._total <= targetValue ? game.i18n.localize('Maus.RollSuccess') : game.i18n.localize('Maus.RollFailure'));
+        resultText = (r.total <= targetValue ? game.i18n.localize('Maus.RollSuccess') : game.i18n.localize('Maus.RollFailure'));
     } 
 
     console.log(this);
-    console.log(r._total);
+    console.log(r.total);
 
     var templateData = {
       actor: this,
@@ -374,9 +374,9 @@ export class MausritterActor extends Actor {
       },
       data: {
         diceTotal: {
-          value: r._total,
-          advantageValue: a._total,
-          damageValue: damageRoll._total,
+          value: r.total,
+          advantageValue: a.total,
+          damageValue: damageRoll.total,
           damageRoll: damageRoll
         },
         resultText: {
@@ -400,7 +400,7 @@ export class MausritterActor extends Actor {
       user: game.user.id,
       speaker: {
         actor: this.id,
-        token: this.token,
+        token: this.prototypeToken,
         alias: this.name
       }
     };
@@ -420,7 +420,7 @@ export class MausritterActor extends Actor {
         game.dice3d.showForRoll(r, game.user, true, chatData.whisper, chatData.blind).then(displayed => ChatMessage.create(chatData));
 
       } else {
-        chatData.sound = CONFIG.sounds.dice;
+        chatData.sound = CONFIG.sounds?.dice || null;
         ChatMessage.create(chatData);
       }
     });
@@ -535,7 +535,7 @@ export class MausritterActor extends Actor {
       user: game.user.id,
       speaker: {
         actor: this.id,
-        token: this.token,
+        token: this.prototypeToken,
         alias: this.name
       }
     };

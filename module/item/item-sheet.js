@@ -6,7 +6,7 @@ export class MausritterItemSheet extends ItemSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["mausritter", "sheet", "item"],
       width: 520,
       height: 480,
@@ -31,7 +31,7 @@ export class MausritterItemSheet extends ItemSheet {
   /** @override */
   getData() {
     const data = super.getData();
-    return data.data;
+    return data;
   }
 
   // /**
@@ -59,7 +59,7 @@ export class MausritterItemSheet extends ItemSheet {
   //   }
   //   else if(item.category == "condition"){item.isWeapon = false; item.isCondition = true;}
 
-  //   var dupeItem = duplicate(item.system);
+  //   var dupeItem = foundry.utils.duplicate(item.system);
 
     
   //   // this.update({"data.recharge.charged": false});
@@ -97,7 +97,7 @@ export class MausritterItemSheet extends ItemSheet {
 
     // data.data.pips.html= pipHtml;
 
-    // let oldData = duplicate(this.object.data);
+    // let oldData = foundry.utils.duplicate(this.object.data);
     // this.object.update(oldData);
     // Roll handlers, click handlers, etc. would go here.
   }

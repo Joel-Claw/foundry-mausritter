@@ -7,7 +7,7 @@ export class MausritterStorageSheet extends ActorSheet {
 
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["mausritter", "sheet", "actor", "storage"],
             template: "systems/mausritter/templates/actor/storage-sheet.html",
             width: 475,
@@ -29,21 +29,20 @@ export class MausritterStorageSheet extends ActorSheet {
             this._prepareCharacterItems(data);
         }
 
+        if (data.system.settings == null) {
+            data.system.settings = {};
+        }
 
-        if (data.data.system.settings == null) {
-            data.data.system.settings = {};
-          }
-
-        data.data.system.storeDiv = "";
-        data.data.system.size.divWidth = data.data.system.size.width * 130 + 35;
-        data.data.system.size.divHeight = data.data.system.size.height * 130 + 35;
+        data.system.storeDiv = "";
+        data.system.size.divWidth = data.system.size.width * 130 + 35;
+        data.system.size.divHeight = data.system.size.height * 130 + 35;
 
         let storenum = 0;
-        for (let y = 0; y < data.data.system.size.height; y++) {
-            for (let x = 0; x < data.data.system.size.width; x++) {
+        for (let y = 0; y < data.system.size.height; y++) {
+            for (let x = 0; x < data.system.size.width; x++) {
                 storenum++;
-                data.data.system.storeDiv += '\
-                <div class="item-slot-dashed" style="transform: translate3d('+ (x * 130 - (data.data.system.size.width - 1) * 65) + 'px, ' + (y * 130 - (data.data.system.size.height - 1) * 65) + 'px, 0px);">\
+                data.system.storeDiv += '\
+                <div class="item-slot-dashed" style="transform: translate3d('+ (x * 130 - (data.system.size.width - 1) * 65) + 'px, ' + (y * 130 - (data.system.size.height - 1) * 65) + 'px, 0px);">\
                     <div class="item-bag-text">\
                         '+ storenum + '\
                     </div>\
@@ -51,12 +50,10 @@ export class MausritterStorageSheet extends ActorSheet {
             }
         }
 
+        this.position.width = data.system.size.width * 130 + 80;
+        this.position.height = data.system.size.height * 130 + 230;
 
-        this.position.width = data.data.system.size.width * 130 + 80;
-        this.position.height = data.data.system.size.height * 130 + 230;
-
-
-        return data.data;
+        return data;
     }
 
     /**
@@ -77,7 +74,7 @@ export class MausritterStorageSheet extends ActorSheet {
         // let totalWeight = 0;
         for (let i of sheetData.items) {
             let item = i.system;
-            i.img = i.img || DEFAULT_TOKEN;
+            i.img = i.img || foundry.constants.DEFAULT_TOKEN;
 
             // We'll handle the pip html here.
             if (item.pips == null) {
@@ -165,7 +162,7 @@ export class MausritterStorageSheet extends ActorSheet {
         // Update Inventory Item
         html.find('.item-equip').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
-            const item = duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
 
             item.system.equipped = !item.system.equipped;
             this.actor.updateEmbeddedDocuments('Item', [item]);
@@ -219,7 +216,7 @@ export class MausritterStorageSheet extends ActorSheet {
         // Rotate Inventory Item
         html.find('.item-rotate').click(ev => {
             const li = ev.currentTarget.closest(".item");
-            const item = duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
             if (item.system.sheet.rotation == -90)
                 item.system.sheet.rotation = 0;
             else
@@ -246,7 +243,7 @@ export class MausritterStorageSheet extends ActorSheet {
         // If we have an item input being adjusted from the character sheet.
         html.on('change', '.item-input', ev => {
             const li = ev.currentTarget.closest(".item");
-            const item = duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
             const input = $(ev.currentTarget);
 
             item[input[0].name] = input[0].value;
@@ -256,7 +253,7 @@ export class MausritterStorageSheet extends ActorSheet {
 
         html.on('mousedown', '.pip-button', ev => {
             const li = ev.currentTarget.closest(".item");
-            const item = duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
 
             let amount = item.system.pips.value;
 
@@ -276,7 +273,7 @@ export class MausritterStorageSheet extends ActorSheet {
 
         html.on('mousedown', '.damage-swap', ev => {
             const li = ev.currentTarget.closest(".item");
-            const item = duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
+            const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", li.dataset.itemId))
 
             let d1 = item.system.weapon.dmg1;
             let d2 = item.system.weapon.dmg2;
@@ -309,7 +306,7 @@ export class MausritterStorageSheet extends ActorSheet {
 
             // html.find('div.dragItems').each((i, dragItem) => {
 
-            //     const item = duplicate(this.actor.getEmbeddedDocument("Item", dragItem.dataset.itemId))
+            //     const item = foundry.utils.duplicate(this.actor.getEmbeddedDocument("Item", dragItem.dataset.itemId))
             //     // let dragItem = document.querySelector("#" + container.dataset.itemId);
             //     var curIndex = 1; //The current zIndex
 
@@ -357,9 +354,9 @@ export class MausritterStorageSheet extends ActorSheet {
         // Get the type of item to create.
         //const type = header.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.duplicate(header.dataset);
         // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
+        const name = `New ${type.charAt(0).toUpperCase() + type.slice(1)}`;
         // Prepare the item object.
         const itemData = {
             name: name,
@@ -384,7 +381,7 @@ export class MausritterStorageSheet extends ActorSheet {
         // Get the type of item to create.
         const type = header.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.duplicate(header.dataset);
         // Initialize a default name.
         const name = `New Skill`;
         // Prepare the item object.
@@ -423,7 +420,7 @@ export class MausritterStorageSheet extends ActorSheet {
 
     async _updateObject(event, formData) {
         const actor = this.object;
-        const updateData = expandObject(formData);
+        const updateData = foundry.utils.expandObject(formData);
 
         await actor.update(updateData, {
             diff: false
@@ -442,7 +439,7 @@ export class MausritterStorageSheet extends ActorSheet {
         if (!itemId)
             return;
 
-        const clickedItem = duplicate(
+        const clickedItem = foundry.utils.duplicate(
             this.actor.getEmbeddedDocument("Item", itemId)
         );
 
@@ -512,7 +509,7 @@ export class MausritterStorageSheet extends ActorSheet {
     async _onDropItem(event, data) {
         if (!this.actor.isOwner) return false;
         const item = await Item.fromDropData(data);
-        const itemData = duplicate(item);
+        const itemData = foundry.utils.duplicate(item);
 
         // Handle item sorting within the same Actor
         const actor = this.actor;
@@ -546,7 +543,7 @@ export class MausritterStorageSheet extends ActorSheet {
 
         let sameActor = (data.actorId === actor.id) || (actor.isToken && (data.tokenId === actor.token.id));
         if (sameActor && !(event.ctrlKey)) {
-            let i = duplicate(actor.getEmbeddedDocument("Item", data.itemId))
+            let i = foundry.utils.duplicate(actor.getEmbeddedDocument("Item", data.itemId))
             i.system.sheet = {
                 currentX: x - data.offset.x,
                 currentY: y - data.offset.y,
