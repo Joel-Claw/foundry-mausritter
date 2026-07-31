@@ -336,10 +336,10 @@ export class MausritterHirelingSheet extends foundry.appv1.sheets.ActorSheet {
     const itemData = {
       name: name,
       type: type,
-      data: data
+      system: data
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.data["type"];
+    delete itemData.system["type"];
 
     // Finally, create the item!
     return this.actor.createEmbeddedDocuments("Item",[itemData]);
@@ -363,10 +363,10 @@ export class MausritterHirelingSheet extends foundry.appv1.sheets.ActorSheet {
     const itemData = {
       name: name,
       type: type,
-      data: data
+      system: data
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.data["type"];
+    delete itemData.system["type"];
 
     // Finally, create the item!
     return this.actor.createEmbeddedDocuments("Item",[itemData]);
