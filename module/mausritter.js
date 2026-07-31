@@ -53,33 +53,36 @@ Hooks.once('init', async function () {
   }
   
   // Register sheet application classes (V14 API)
+  // V14 DocumentSheetConfig requires documentClass as first param
   const sheetConfig = foundry.applications.api.DocumentSheetConfig;
   const ActorSheetV1 = foundry.appv1.sheets.ActorSheet;
   const ItemSheetV1 = foundry.appv1.sheets.ItemSheet;
+  const ActorDoc = foundry.documents.Actor;
+  const ItemDoc = foundry.documents.Item;
 
-  sheetConfig.unregisterSheet("core", ActorSheetV1, {
+  sheetConfig.unregisterSheet(ActorDoc, "core", ActorSheetV1, {
     types: ['character', 'hireling', 'creature', 'storage']
   });
 
-  sheetConfig.registerSheet("mausritter", MausritterActorSheet, {
+  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterActorSheet, {
     types: ['character'],
     makeDefault: true
   });
-  sheetConfig.registerSheet("mausritter", MausritterHirelingSheet, {
+  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterHirelingSheet, {
     types: ['hireling'],
     makeDefault: false
   });
-  sheetConfig.registerSheet("mausritter", MausritterCreatureSheet, {
+  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterCreatureSheet, {
     types: ['creature'],
     makeDefault: false
   });
-  sheetConfig.registerSheet("mausritter", MausritterStorageSheet, {
+  sheetConfig.registerSheet(ActorDoc, "mausritter", MausritterStorageSheet, {
     types: ['storage'],
     makeDefault: false
   });
 
-  sheetConfig.unregisterSheet("core", ItemSheetV1);
-  sheetConfig.registerSheet("mausritter", MausritterItemSheet, { makeDefault: true });
+  sheetConfig.unregisterSheet(ItemDoc, "core", ItemSheetV1);
+  sheetConfig.registerSheet(ItemDoc, "mausritter", MausritterItemSheet, { makeDefault: true });
 
   // If you need to add Handlebars helpers, here are a few useful examples:
   Handlebars.registerHelper('concat', function () {
