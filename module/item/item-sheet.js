@@ -71,6 +71,15 @@ export class MausritterItemSheet extends foundry.appv1.sheets.ItemSheet {
   /* -------------------------------------------- */
 
   /** @override */
+  _updateObject(event, formData) {
+    // V14: Ensure required 'name' field is present in update diff
+    if (formData.name === undefined) formData.name = this.item.name;
+    return this.item.update(formData);
+  }
+
+  /* -------------------------------------------- */
+
+  /** @override */
   setPosition(options = {}) {
     const position = super.setPosition(options);
     const sheetBody = $(this.element).find(".sheet-body");
